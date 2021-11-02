@@ -14,28 +14,35 @@
 
 float *generateDataForHistogram();
 int *parseDataIntoIntArray(float*);
-void createHistogram(int*,int*);
-int *createScaleForParsedData(int*);
+void createHistogram(int*,float*);
+float *createScaleForParsedData(int*);
 
 int main (int argc, int *argv[]) {
 
-    // float *data = generateDataForHistogram();
+    // float *data = generateDataForHistogra();
 
     int *parsedData = parseDataIntoIntArray(generateDataForHistogram());
-    int *scale = createScaleForParsedData(parsedData);
+    float *scale = createScaleForParsedData(parsedData);
 
     createHistogram(parsedData,scale);
 
+
+    free(parsedData);
+    free(scale);
     
     return 0;
 }
 
-void createHistogram(int *parsedData, int *scale) {
+void createHistogram(int *parsedData, float *scale) {
     
-    for (int i = SCALE_HEIGHT; i > 0; i--) {
+    // for (int j = 0; j < HIST_WIDTH; j++) {
+    //        printf("%d\n",parsedData[j]);
+    // }
+
+    for (int i = SCALE_HEIGHT-1; i >= 0; i--) {
         for (int j = 0; j < HIST_WIDTH; j++) {
             
-            if (parsedData[i] >= SCALE_HEIGHT*scale[i]) printf("|");
+            if (parsedData[j] >= scale[i]) printf("|");
             else printf(" ");
 
         }
@@ -43,16 +50,18 @@ void createHistogram(int *parsedData, int *scale) {
     }
 }
 
-int *createScaleForParsedData(int *parsedData) {
+float *createScaleForParsedData(int *parsedData) {
+
     int maxValue = 0;
+
     for (int i = 0 ; i < HIST_WIDTH; i++) {
-        if (parsedData[i] > maxValue) maxValue = parsedData[i];
+        if (parsedData[i] > maxValue) maxValue = parsedData[i]; //get the maximum value on histogram
     }
 
-    int *result = malloc(sizeof(int)*SCALE_HEIGHT);
+    float *result = malloc(sizeof(float)*SCALE_HEIGHT);
 
     for (int i = 0; i < SCALE_HEIGHT; i++) {
-        result[i] = maxValue/SCALE_HEIGHT*i; //max value will not be shown
+        result[i] = (float)maxValue/SCALE_HEIGHT*i; //max value will not be shown
     }
 
     return result;
@@ -66,6 +75,7 @@ int *parseDataIntoIntArray(float *data) {
     }
     for (int i = 0; i < DATA_SIZE; i++) {
         int index = (int)(data[i]*HIST_WIDTH);
+        // printf("%d\n",index); 
         result[index]++;
     }
 
@@ -75,7 +85,7 @@ int *parseDataIntoIntArray(float *data) {
 float *generateDataForHistogram() {
     float *result = malloc(sizeof(float) * 1000);
 
-    // srand(time(NULL));
+    srand(time(NULL));
 
     for (int i = 0; i < DATA_SIZE; i++) {
         float a = (float)(rand())/RAND_MAX;
