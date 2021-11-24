@@ -12,9 +12,13 @@ void printBoard(char **);
 
 int checkIfValid(int, int);
 
-int checkIfFree(int , int, char **);
+int checkIfFreeToPlace(int , int, char **);
 
-int *generateField();
+int checkIfValid(int,int);
+
+int chooseDirection(int,int);
+
+int *generateField(char **);
 
 void addOneDeckShip(char **);
 
