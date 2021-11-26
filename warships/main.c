@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "initBoard.h"
+#include "initComputerBoard.h"
 
 
 int main(int argc, char *argvp[]) {

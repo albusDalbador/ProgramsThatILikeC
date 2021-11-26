@@ -1,4 +1,4 @@
-#include "initBoard.h"
+#include "initComputerBoard.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -15,6 +15,14 @@ void addThreeDeckShip(char **board) {
 void addTwoDeckShip(char **board) {
     int *field = generateField(board);
 
+    while (1)
+    {
+        if (checkIfFreeToPlace(field[0],field[1],board)) break;
+
+        field = generateField(board);
+    }
+    
+
     int direction = chooseDirection(field[0],field[1]);
 
     int flag = 1;
@@ -22,50 +30,62 @@ void addTwoDeckShip(char **board) {
     //    0
     //  3   1
     //    4
-
+    // printf("%d\n",direction);
     while (flag) {
         switch (direction)
         {
         case 0:
             if (checkIfFreeToPlace(field[0] -1,field[1],board)) {
+                board[field[0]-1][field[1]] = 'O';
                 board[field[0]][field[1]] = 'O';
+                return;
             } 
  
             break;
 
         case 1:
            if (checkIfFreeToPlace(field[0],field[1] + 1,board)) {
+                board[field[0]][field[1] + 1] = 'O';
                 board[field[0]][field[1]] = 'O';
+                return;
             } 
             break;
 
         case 2:
-            if (checkIfFreeToPlace(field[0] - 1,field[1],board)) {
+            if (checkIfFreeToPlace(field[0] + 1,field[1],board)) {
+                board[field[0] + 1][field[1]] = 'O';
                 board[field[0]][field[1]] = 'O';
+                return;
             } 
             break;
 
         case 3:
             if (checkIfFreeToPlace(field[0],field[1] - 1,board)) {
+                board[field[0]][field[1] - 1] = 'O';
                 board[field[0]][field[1]] = 'O';
+                return;
             } 
             break;
         
         default:
             break;
         }
+        // printf("%d\t %d\n",field[0],field[1]);
 
         direction = chooseDirection(field[0],field[1]);
     }
+
 }
 
 void addOneDeckShip(char **board) {
+
     int *field = generateField(board);
 
     board[field[0]][field[1]] = 'O';
 }
 
 void addSingleShip(char **board,void(*addFunction)(char **)) {
+    
     addFunction(board);
 }
 
@@ -100,15 +120,16 @@ int chooseDirection(int a, int b) {
 
 
 int *generateField(char **board) {
-    int *field = (int)malloc(sizeof(int) * 2);
+    int *field = (int *)malloc(sizeof(int) * 2);
     
     srand(time(NULL));
 
     field[0] = rand() % 10;
     field[1] = rand() % 10;
-
+    
     while (!checkIfFreeToPlace(field[0],field[1],board))
     {
+        
         field[0] = rand() % 10;
         field[1] = rand() % 10;
     }
@@ -137,11 +158,10 @@ void placeShips(char **board) {
 
     void (*shipFunctions[])(char **) = {addOneDeckShip,addTwoDeckShip,addThreeDeckShip,addFourDeckShip};
 
-    for (int i = 1; i <= 4; i++) {
-   
+    for (int i = 0; i < 4; i++) {
         // addSingleShip(board,shipFunctions[0]);
-        for (int j = i; j <= 4; j++) {
-            addSingleShip(board,shipFunctions[j]);
+        for (int j = i; j < 4; j++) {
+            addSingleShip(board,shipFunctions[i]);
         }
     }
 }
