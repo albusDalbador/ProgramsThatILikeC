@@ -1,14 +1,20 @@
 #include <stdio.h>
-#include "initComputerBoard.h"
+#include "initBoard.h"
+#include "playerBoard.h"
+#include "computerBoard.h"
 
 
 int main(int argc, char *argvp[]) {
 
-    char *(*board)[BOARD_SIZE] = initBoard();
+    char *(*computerBoard)[BOARD_SIZE] = initBoard();
 
-    placeShips(board);
+    placeShips(computerBoard);
 
-    printBoard(board);
+    printBoard(computerBoard);
+
+    char *(*playerBoard)[BOARD_SIZE] = initBoard();
+
+
 
     return 0;
 }
