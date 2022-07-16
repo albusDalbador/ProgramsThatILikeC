@@ -83,7 +83,7 @@ int *parseDataIntoIntArray(float *data) {
 }
 
 float *generateDataForHistogram() {
-    float *result = malloc(sizeof(float) * 1000);
+    float *result = malloc(sizeof(float) * DATA_SIZE);
 
     srand(time(NULL));
 
